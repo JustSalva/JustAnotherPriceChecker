@@ -16,10 +16,8 @@ def read_json_config_file():
         configuration_data = json.load(configuration_file)
     amazon_urls_to_be_monitored_list = configuration_data['urls_to_be_monitored_list']
     notification_method = configuration_data['notification_method']
-    notification_key = configuration_data['notification_key']
-    kwargs = dict()
-    kwargs['notification_key'] = notification_key
     time_interval_between_requests = configuration_data['time_interval_between_requests']
+    kwargs = configuration_data
 
 
 if __name__ == '__main__':
