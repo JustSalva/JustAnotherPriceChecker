@@ -3,6 +3,11 @@ import requests
 
 from custom_exceptions import RequestFailedException
 from requests_handler import perform_request
+import logging
+
+module_logger = logging.getLogger('JustAnotherPriceChecker.notificator')
+IFTTT_WEBHOOKS_URL = 'https://maker.ifttt.com/trigger/{}/with/key/{}'
+
 
 def notification_function_selector(notification_method_name: str):
     switch = {

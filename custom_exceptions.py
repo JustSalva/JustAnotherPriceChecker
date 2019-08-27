@@ -16,11 +16,13 @@ class RequestFailedException(GenericException):
 
     pass
 
+
 class NotificationMethodNotPresent(GenericException):
     def __init__(self):
         super().__init__("The selected notification method is either not supported or it does not exist!")
 
     pass
+
 
 class WebsiteNotSupported(GenericException):
     def __init__(self):
