@@ -33,8 +33,8 @@ if __name__ == '__main__':
 
                 website_function = website_function_selector(website_name)
                 notification_function = notification_function_selector(notification_method)
-                check_amazon_price(url, required_price, notification_function, **kwargs)
-                
+                website_function(url, required_price, notification_function, **kwargs)
+
             time.sleep(time_interval_between_requests)
     except WebsiteNotSupported as websiteNotSupported:
         print(websiteNotSupported.message)

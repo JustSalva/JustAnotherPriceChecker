@@ -23,7 +23,6 @@ def website_function_selector(website_name: str):
 def perform_get_request(url):
     try:
         web_page = requests.get(url, headers=HEADERS)
-        return web_page
     except requests.ConnectionError:
         module_logger.error('Cannot connect to the url due to network problem.')
     except requests.HTTPError:
@@ -32,8 +31,10 @@ def perform_get_request(url):
         module_logger.error('The request exceeds the maximum number of redirections.')
     except requests.Timeout:
         module_logger.error('The request timeout is expired.')
-    finally:
-        raise RequestFailedException
+    else:
+        return web_page
+
+    raise RequestFailedException
 
 
 def check_amazon_price(url: str, required_price: float, action_to_perform: Callable[[dict], None], **kwargs: dict):
@@ -50,9 +51,8 @@ def check_amazon_price(url: str, required_price: float, action_to_perform: Calla
     price, _ = price.split()
     price = price.replace(",", ".")
     price = float(price)
-    print(price)
     if price <= required_price:
-        action_to_perform(kwargs)
+        action_to_perform(**kwargs)
 
 
 def default():
