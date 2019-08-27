@@ -1,3 +1,4 @@
+
 import logging
 import json
 import time
@@ -21,9 +22,10 @@ def read_json_config_file():
 
 
 if __name__ == '__main__':
-    read_json_config_file()
+
     try:
         while True:
+            read_json_config_file()
             for element_to_be_monitored in amazon_urls_to_be_monitored_list:
                 url = element_to_be_monitored['url']
                 required_price = element_to_be_monitored['required_price']
