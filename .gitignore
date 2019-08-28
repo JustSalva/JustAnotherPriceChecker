@@ -49,3 +49,5 @@ venv/
 
 #Jetbrain's stuff
 \.idea/
+
+current_prices.json
