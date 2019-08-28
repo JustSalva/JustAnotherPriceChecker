@@ -22,7 +22,7 @@ def amazon_page_parser(web_page):
 
     price = page_content.find(id='priceblock_ourprice')
     if price is None:
-        price = page_content.find(id='a-color-price')
+        price = page_content.find(id='olp-sl-new-used').contents[1].contents[2] #secondary vendors price
     price = price.get_text()
     title = page_content.find(id='productTitle').get_text()
     title = title.strip()
