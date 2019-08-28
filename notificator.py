@@ -56,7 +56,7 @@ def send_generic_notification(notification_name: str, json_data: dict = None, **
 
 def send_weekly_report(**kwargs):
     event_name = 'WeeklyReport'
-    json_data = json_data_parser(value1=kwargs['weekly_report'])
+    json_data = json_data_parser(value1=kwargs[WEEKLY_REPORT])
     send_generic_notification(event_name, json_data=json_data, **kwargs)
 
 def default_notification():

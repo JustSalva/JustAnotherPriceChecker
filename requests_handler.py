@@ -1,13 +1,13 @@
 from typing import Callable
 import requests
 from custom_exceptions import RequestFailedException
+from custom_constants import *
 import logging
 
 module_logger = logging.getLogger('JustAnotherPriceChecker.requests_handler')
 
 HEADERS = {
-    'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/76.0.3809.100 Safari/537.36'
+    'User-Agent': CHROME_USER_AGENT
 }
 
 

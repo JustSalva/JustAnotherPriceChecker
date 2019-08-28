@@ -1,6 +1,6 @@
 import json
 from notificator import send_weekly_report
-import time
+from custom_constants import *
 
 
 def load_current_prices_file():
@@ -10,10 +10,9 @@ def load_current_prices_file():
 
 
 def weekly_report(kwargs=None):
-    print("weekly report!")
     current_prices = load_current_prices_file()
     notification_body = ""
     for item in current_prices:
         notification_body = notification_body + item + ':\t' + current_prices[item] + '\n'
-    kwargs['weekly_report'] = notification_body
+    kwargs[WEEKLY_REPORT] = notification_body
     send_weekly_report(**kwargs)
