@@ -16,13 +16,19 @@ def website_function_selector(website_name: str):
     return switch.get(website_name, default)
 
 
+def update_current_prices_dictionary(title: str, price: float, currency: str, **kwargs):
+    if len(title)>16:
+        title = title[0:15]
+    kwargs['current_prices'][title] = str(price) + " " + currency
+
+
 def amazon_page_parser(web_page):
     # read title and price from amazon page
     page_content = BeautifulSoup(web_page.content, 'html.parser')
 
     price = page_content.find(id='priceblock_ourprice')
     if price is None:
-        price = page_content.find(id='olp-sl-new-used').contents[1].contents[2] #secondary vendors price
+        price = page_content.find(id='olp-sl-new-used').contents[1].contents[2]  # secondary vendors price
     price = price.get_text()
     title = page_content.find(id='productTitle').get_text()
     title = title.strip()
@@ -43,6 +49,7 @@ def check_amazon_price(url: str, required_price: float, action_to_perform: Calla
 
     title, price, currency = amazon_page_parser(web_page)
 
+    update_current_prices_dictionary(title, price, currency, **kwargs)
     if price <= required_price:
         # set up values to be inserted in the notification
         kwargs['title'] = title

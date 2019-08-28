@@ -54,6 +54,10 @@ def send_generic_notification(notification_name: str, json_data: dict = None, **
     except RequestFailedException as requestFailedException:
         module_logger.error(requestFailedException.message)
 
+def send_weekly_report(**kwargs):
+    event_name = 'WeeklyReport'
+    json_data = json_data_parser(value1=kwargs['weekly_report'])
+    send_generic_notification(event_name, json_data=json_data, **kwargs)
 
 def default_notification():
     raise NotificationMethodNotPresent
