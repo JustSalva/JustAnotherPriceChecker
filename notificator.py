@@ -39,8 +39,13 @@ def send_IFTTT_notification(**kwargs):
 
     send_generic_notification(event_name, json_data=json_data, **kwargs)
 
+
 def send_failure_notification(**kwargs):
     event_name = 'RaspberryServiceDown'
+    json_data = json_data_parser(value1='JustAnotherPriceChecker')
+    send_generic_notification(event_name, json_data=json_data, **kwargs)
+
+
 def send_generic_notification(notification_name: str, json_data: dict = None, **kwargs):
     notification_key = kwargs['notification_key']
     ifttt_webhook_url = IFTTT_WEBHOOKS_URL.format(notification_name, notification_key)

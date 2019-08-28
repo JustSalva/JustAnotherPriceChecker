@@ -27,6 +27,7 @@ if __name__ == '__main__':
     try:
         while True:
             read_json_config_file()
+            raise Exception
             for element_to_be_monitored in amazon_urls_to_be_monitored_list:
                 url = element_to_be_monitored['url']
                 required_price = element_to_be_monitored['required_price']
@@ -43,3 +44,5 @@ if __name__ == '__main__':
         print(notificationMethodNotPresent.message)
     except KeyboardInterrupt:
         print('Process Interrupted!')
+    except Exception:
+        send_failure_notification(**kwargs)
