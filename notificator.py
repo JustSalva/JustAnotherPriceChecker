@@ -16,16 +16,34 @@ def notification_function_selector(notification_method_name: str):
     return switch.get(notification_method_name, default_notification)
 
 
-def send_IFTTT_notification(**kwargs):
-    notification_key = kwargs['notification_key']
-    event_name = kwargs['event_name']
-    ifttt_webhook_url = IFTTT_WEBHOOKS_URL.format(event_name, notification_key)
+def json_data_parser(value1=None, value2=None, value3=None, occurred_at=None):
+    json_data = dict()
+    if value1 is not None:
+        json_data['value1'] = value1
 
-    json_data = {
-        "value1": kwargs["title"],
-        "value2": kwargs["price"],
-        "value3": kwargs["url"],
-    }
+    if value2 is not None:
+        json_data['value2'] = value2
+
+    if value3 is not None:
+        json_data['value3'] = value3
+
+    if value3 is not None:
+        json_data['occurredAt'] = occurred_at
+
+    return json_data
+
+
+def send_IFTTT_notification(**kwargs):
+    event_name = kwargs['event_name']
+    json_data = json_data_parser(value1=kwargs["title"], value2=kwargs["price"], value3=kwargs["url"])
+
+    send_generic_notification(event_name, json_data=json_data, **kwargs)
+
+def send_failure_notification(**kwargs):
+    event_name = 'RaspberryServiceDown'
+def send_generic_notification(notification_name: str, json_data: dict = None, **kwargs):
+    notification_key = kwargs['notification_key']
+    ifttt_webhook_url = IFTTT_WEBHOOKS_URL.format(notification_name, notification_key)
     try:
         perform_request(ifttt_webhook_url, requests.post, data=json_data)
     except RequestFailedException as requestFailedException:
