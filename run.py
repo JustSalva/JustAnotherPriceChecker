@@ -5,6 +5,7 @@ import json
 import time
 from price_checker import *
 from notificator import *
+import traceback
 
 logger = logging.getLogger("JustAnotherPriceChecker")
 logger.setLevel(logging.DEBUG)
@@ -43,5 +44,7 @@ if __name__ == '__main__':
         print(notificationMethodNotPresent.message)
     except KeyboardInterrupt:
         print('Process Interrupted!')
-    except Exception:
+    except Exception as e:
+        print('Critical failure!')
+        traceback.print_exc()
         send_failure_notification(**kwargs)
