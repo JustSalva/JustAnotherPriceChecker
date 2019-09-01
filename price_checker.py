@@ -19,7 +19,7 @@ def website_function_selector(website_name: str):
 
 def update_current_prices_dictionary(title: str, price: float, currency: str, **kwargs):
     if len(title)>16:
-        title = title[0:15]
+        title = title[0:20]
     kwargs[CURRENT_PRICES][title] = str(price) + " " + currency
 
 
@@ -29,7 +29,12 @@ def amazon_page_parser(web_page):
 
     price = page_content.find(id=ID_AMAZON_PRICE)
     if price is None:
-        price = page_content.find(id=ID_AMAZON_VENDOR_PRICE).contents[1].contents[2]  # secondary vendors price
+        # secondary vendors price if Amazon's one is unavailable
+        price = page_content.find(id=ID_AMAZON_VENDOR_PRICE_NEW_AND_USED)
+        if price is None:  # if used price is not present, the array position changes
+            price = page_content.find(id=ID_AMAZON_VENDOR_PRICE_ONLY_NEW)
+        price = price.contents[1].contents[2]
+
     price = price.get_text()
     title = page_content.find(id=ID_AMAZON_PRODUCT_PRICE).get_text()
     title = title.strip()

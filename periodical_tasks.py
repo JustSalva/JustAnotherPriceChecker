@@ -11,7 +11,7 @@ def load_current_prices_file():
 
 def weekly_report(kwargs=None):
     current_prices = load_current_prices_file()
-    notification_body = ""
+    notification_body = "\n"
     for item in current_prices:
         notification_body = notification_body + item + ':\t' + current_prices[item] + '\n'
     kwargs[WEEKLY_REPORT] = notification_body

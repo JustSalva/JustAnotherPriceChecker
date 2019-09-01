@@ -1,9 +1,9 @@
-from custom_exceptions import NotificationMethodNotPresent
 import requests
-
-from custom_exceptions import RequestFailedException
-from requests_handler import perform_request
 import logging
+
+from custom_exceptions import NotificationMethodNotPresent, RequestFailedException
+from requests_handler import perform_request
+from custom_constants import WEEKLY_REPORT
 
 module_logger = logging.getLogger('JustAnotherPriceChecker.notificator')
 IFTTT_WEBHOOKS_URL = 'https://maker.ifttt.com/trigger/{}/with/key/{}'
@@ -54,10 +54,12 @@ def send_generic_notification(notification_name: str, json_data: dict = None, **
     except RequestFailedException as requestFailedException:
         module_logger.error(requestFailedException.message)
 
+
 def send_weekly_report(**kwargs):
     event_name = 'WeeklyReport'
     json_data = json_data_parser(value1=kwargs[WEEKLY_REPORT])
     send_generic_notification(event_name, json_data=json_data, **kwargs)
+
 
 def default_notification():
     raise NotificationMethodNotPresent
