@@ -46,7 +46,7 @@ if __name__ == '__main__':
 
                 website_function = website_function_selector(website_name)
                 notification_function = notification_function_selector(notification_method)
-                website_function(url, required_price, notification_function, **kwargs)
+                check_price(url, required_price, website_function, notification_function, **kwargs)
             save_current_prices_to_file()
             schedule.run_pending()
             time.sleep(time_interval_between_requests)

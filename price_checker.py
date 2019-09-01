@@ -12,15 +12,29 @@ module_logger = logging.getLogger('JustAnotherPriceChecker.price_checker')
 
 def website_function_selector(website_name: str):
     switch = {
-        'Amazon': check_amazon_price
+        'Amazon': amazon_page_parser,
+        'ResetDigitale': resetdigitale_page_parser
     }
     return switch.get(website_name, default)
 
 
 def update_current_prices_dictionary(title: str, price: float, currency: str, **kwargs):
-    if len(title)>16:
+    if len(title) > 16:
         title = title[0:20]
     kwargs[CURRENT_PRICES][title] = str(price) + " " + currency
+
+
+def resetdigitale_page_parser(web_page):
+    # read title and price from amazon page
+    page_content = BeautifulSoup(web_page.content, 'html.parser')
+
+    price = page_content.find('span', {'class': 'price'}, id=ID_RESETDIGITALE_PRICE)
+    price = price.get_text()
+    title = page_content.find(id=ID_RESETDIGITALE_TITLE).get_text().split("  ", maxsplit=1)[0]
+    title = title.strip()
+    currency, price = price.split()
+    price = float(price)
+    return title, price, currency
 
 
 def amazon_page_parser(web_page):
@@ -44,7 +58,8 @@ def amazon_page_parser(web_page):
     return title, price, currency
 
 
-def check_amazon_price(url: str, required_price: float, action_to_perform: Callable[[dict], None], **kwargs: dict):
+def check_price(url: str, required_price: float, page_parser: Callable, action_to_perform: Callable[[dict], None],
+                **kwargs: dict):
     module_logger.info('Performing get request...')
 
     try:
@@ -53,7 +68,7 @@ def check_amazon_price(url: str, required_price: float, action_to_perform: Calla
         module_logger.error(requestFailedException.message)
         return
 
-    title, price, currency = amazon_page_parser(web_page)
+    title, price, currency = page_parser(web_page)
 
     update_current_prices_dictionary(title, price, currency, **kwargs)
     if price <= required_price:
